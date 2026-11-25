@@ -4,7 +4,7 @@ def radix_sort(values):
     Time: O(d(n + b)) for d digits and base b=10. Returns a new list.
     """
     items = list(values)
-    if any(not isinstance(value, int) for value in items):
+    if any(isinstance(value, bool) or not isinstance(value, int) for value in items):
         raise TypeError("radix_sort supports integers only")
     if not items:
         return []

@@ -13,7 +13,7 @@ Thanks for considering a contribution! SortLab aims to be a welcoming, beginner-
 ## Development setup
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/sortlab.git
+git clone https://github.com/bhr007/sortlab.git
 cd sortlab
 python -m venv .venv
 source .venv/bin/activate

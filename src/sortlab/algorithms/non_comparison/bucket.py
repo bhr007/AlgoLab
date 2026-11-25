@@ -1,3 +1,6 @@
+import math
+
+
 def bucket_sort(values, bucket_count=None):
     """Return a sorted copy of finite numeric values using bucket sort.
 
@@ -6,19 +9,23 @@ def bucket_sort(values, bucket_count=None):
     Expected performance depends on a reasonably even distribution.
     """
     items = list(values)
+    for value in items:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise TypeError("bucket_sort supports int and float values only")
+        if not math.isfinite(value):
+            raise ValueError("bucket_sort supports finite numbers only")
+
+    if bucket_count is not None and bucket_count <= 0:
+        raise ValueError("bucket_count must be positive")
+
     if len(items) <= 1:
         return items
-    if any(not isinstance(value, (int, float)) for value in items):
-        raise TypeError("bucket_sort supports int and float values only")
 
     minimum, maximum = min(items), max(items)
     if minimum == maximum:
         return items
 
     count = len(items) if bucket_count is None else bucket_count
-    if count <= 0:
-        raise ValueError("bucket_count must be positive")
-
     buckets = [[] for _ in range(count)]
     span = maximum - minimum
     for value in items:

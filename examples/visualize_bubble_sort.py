@@ -5,4 +5,8 @@ from sortlab.visualization.matplotlib import animate_events
 
 if __name__ == "__main__":
     sample = [8, 3, 5, 1, 9, 2, 6, 4]
-    animate_events(bubble_sort_events(sample), interval=450)
+    animate_events(
+        bubble_sort_events(sample),
+        interval=450,
+        algorithm_name="Bubble Sort",
+    )

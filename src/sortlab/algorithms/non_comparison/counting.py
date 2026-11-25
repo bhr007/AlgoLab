@@ -4,11 +4,10 @@ def counting_sort(values):
     Time: O(n + k), where k is the integer range. Space: O(n + k).
     """
     items = list(values)
+    if any(isinstance(value, bool) or not isinstance(value, int) for value in items):
+        raise TypeError("counting_sort supports integers only")
     if not items:
         return []
-
-    if any(not isinstance(value, int) for value in items):
-        raise TypeError("counting_sort supports integers only")
 
     minimum, maximum = min(items), max(items)
     counts = [0] * (maximum - minimum + 1)

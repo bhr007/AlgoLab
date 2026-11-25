@@ -55,3 +55,16 @@ def test_radix_sort_rejects_floats():
 def test_bucket_sort_rejects_invalid_bucket_count():
     with pytest.raises(ValueError):
         bucket_sort([1, 2, 3], bucket_count=0)
+
+
+def test_non_comparison_sorts_reject_booleans_and_non_finite_values():
+    with pytest.raises(TypeError):
+        counting_sort([True, 1])
+    with pytest.raises(TypeError):
+        radix_sort([False, 2])
+    with pytest.raises(TypeError):
+        bucket_sort([True, 1.0])
+    with pytest.raises(ValueError):
+        bucket_sort([1.0, float("nan")])
+    with pytest.raises(ValueError):
+        bucket_sort([1.0, float("inf")])
