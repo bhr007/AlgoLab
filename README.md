@@ -18,7 +18,7 @@ SortLab is an educational, open-source reference library for sorting algorithms.
 ## Quick start
 
 ```bash
-git clone https://github.com/bhr007/sortlab.git
+git clone https://github.com/bhr007/SortLab.git
 cd sortlab
 python -m venv .venv
 # macOS / Linux:
