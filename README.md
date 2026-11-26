@@ -18,6 +18,8 @@ SortLab is an educational, open-source Python reference library for **sorting al
 
 ## Quick start
 
+For detailed OS-specific instructions (macOS, Linux, Windows PowerShell), see [docs/EXECUTION_GUIDE.md](docs/EXECUTION_GUIDE.md).
+
 ```bash
 git clone https://github.com/bhr007/SortLab.git
 cd sortlab
