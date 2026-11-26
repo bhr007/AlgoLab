@@ -7,6 +7,12 @@ from dataclasses import dataclass
 
 from sortlab.core.events import SortEvent, SortEventType
 
+from ._playback import (
+    PlaybackControllerMixin,
+    compute_default_interval,
+    select_rendered_indices,
+)
+
 STATE_COLORS: dict[str, str] = {
     "unsorted": "#4C78A8",
     SortEventType.COMPARE.value: "#F58518",
@@ -58,7 +64,7 @@ def _format_value(value: object) -> str:
 
 def _compute_default_interval(frame_count: int) -> int:
     """Choose a responsive playback interval in milliseconds for ``frame_count``."""
-    return max(15, min(450, 10_000 // max(1, frame_count)))
+    return compute_default_interval(frame_count)
 
 
 def _build_counter_timeline(events: list[SortEvent]) -> list[EventCounters]:
@@ -98,17 +104,7 @@ def _build_counter_timeline(events: list[SortEvent]) -> list[EventCounters]:
 
 def _select_rendered_indices(total: int, max_frames: int | None) -> list[int]:
     """Select evenly spaced event indices, always keeping the first and last."""
-    if max_frames is None or total <= max_frames or max_frames < 2:
-        return list(range(total))
-    step = (total - 1) / (max_frames - 1)
-    indices = [round(i * step) for i in range(max_frames - 1)]
-    indices.append(total - 1)
-    # Deduplicate while preserving order.
-    deduped: list[int] = []
-    for idx in indices:
-        if not deduped or deduped[-1] != idx:
-            deduped.append(idx)
-    return deduped
+    return select_rendered_indices(total, max_frames)
 
 
 def _format_counter_line(counter: EventCounters, step: int, total_steps: int) -> str:
@@ -129,7 +125,7 @@ def _format_counter_line(counter: EventCounters, step: int, total_steps: int) ->
     return "   |   ".join(parts)
 
 
-class SortAnimationController:
+class SortAnimationController(PlaybackControllerMixin):
     """Interactive controller managing Matplotlib bars, counters, and controls."""
 
     def __init__(
@@ -140,6 +136,7 @@ class SortAnimationController:
         algorithm_name: str,
         interval: int,
         max_frames: int | None = None,
+        external_ui: dict[str, object] | None = None,
     ) -> None:
         from matplotlib.animation import FuncAnimation
         from matplotlib.patches import Patch
@@ -201,7 +198,8 @@ class SortAnimationController:
         self.y_max = max_val
         self.label_offset = (max_val - min_val) * 0.02
 
-        self.fig.subplots_adjust(top=0.77, bottom=0.19, left=0.08, right=0.96)
+        if external_ui is None:
+            self.fig.subplots_adjust(top=0.77, bottom=0.19, left=0.08, right=0.96)
         self.bars = list(
             self.ax.bar(
                 range(self.array_len),
@@ -248,34 +246,40 @@ class SortAnimationController:
                 self.value_texts.append(text)
 
         # Header HUD: algorithm name, current operation, and live counters.
-        self.title_text = self.fig.text(
-            0.5,
-            0.945,
-            f"SortLab — {self.algorithm_name}",
-            ha="center",
-            va="top",
-            fontsize=14,
-            fontweight="bold",
-        )
-        self.operation_text = self.fig.text(
-            0.5,
-            0.895,
-            "",
-            ha="center",
-            va="top",
-            fontsize=10.5,
-            color="#333333",
-        )
-        self.counter_text = self.fig.text(
-            0.5,
-            0.85,
-            "",
-            ha="center",
-            va="top",
-            fontsize=9.5,
-            color="#1F2933",
-            bbox={"boxstyle": "round,pad=0.3", "facecolor": "#F3F4F6", "edgecolor": "#D1D5DB"},
-        )
+        if external_ui is not None:
+            self.title_text = external_ui["title_text"]
+            self.operation_text = external_ui["operation_text"]
+            self.counter_text = external_ui["counter_text"]
+            self.title_text.set_text(f"SortLab — {self.algorithm_name}")
+        else:
+            self.title_text = self.fig.text(
+                0.5,
+                0.945,
+                f"SortLab — {self.algorithm_name}",
+                ha="center",
+                va="top",
+                fontsize=14,
+                fontweight="bold",
+            )
+            self.operation_text = self.fig.text(
+                0.5,
+                0.895,
+                "",
+                ha="center",
+                va="top",
+                fontsize=10.5,
+                color="#333333",
+            )
+            self.counter_text = self.fig.text(
+                0.5,
+                0.85,
+                "",
+                ha="center",
+                va="top",
+                fontsize=9.5,
+                color="#1F2933",
+                bbox={"boxstyle": "round,pad=0.3", "facecolor": "#F3F4F6", "edgecolor": "#D1D5DB"},
+            )
 
         # Build compact legend containing states present in this event stream.
         present_types = {event.type for event in events}
@@ -309,27 +313,34 @@ class SortAnimationController:
         )
 
         # Interactive playback controls.
-        ax_play = self.fig.add_axes([0.10, 0.04, 0.13, 0.055])
-        ax_step = self.fig.add_axes([0.25, 0.04, 0.10, 0.055])
-        ax_reset = self.fig.add_axes([0.37, 0.04, 0.10, 0.055])
-        ax_speed = self.fig.add_axes([0.57, 0.048, 0.31, 0.04])
+        if external_ui is not None:
+            self.btn_play = external_ui["btn_play"]
+            self.btn_step = external_ui["btn_step"]
+            self.btn_reset = external_ui["btn_reset"]
+            self.slider_speed = external_ui["slider_speed"]
+            self.btn_play.label.set_text("Pause")
+        else:
+            ax_play = self.fig.add_axes([0.10, 0.04, 0.13, 0.055])
+            ax_step = self.fig.add_axes([0.25, 0.04, 0.10, 0.055])
+            ax_reset = self.fig.add_axes([0.37, 0.04, 0.10, 0.055])
+            ax_speed = self.fig.add_axes([0.57, 0.048, 0.31, 0.04])
 
-        self.btn_play = Button(ax_play, "Pause")
-        self.btn_step = Button(ax_step, "Step")
-        self.btn_reset = Button(ax_reset, "Reset")
-        self.slider_speed = Slider(
-            ax_speed,
-            "Delay (ms)",
-            10,
-            1000,
-            valinit=max(10, min(1000, interval)),
-            valstep=10,
-        )
+            self.btn_play = Button(ax_play, "Pause")
+            self.btn_step = Button(ax_step, "Step")
+            self.btn_reset = Button(ax_reset, "Reset")
+            self.slider_speed = Slider(
+                ax_speed,
+                "Delay (ms)",
+                10,
+                1000,
+                valinit=max(10, min(1000, interval)),
+                valstep=10,
+            )
 
-        self.btn_play.on_clicked(self.toggle_play)
-        self.btn_step.on_clicked(self.step_once)
-        self.btn_reset.on_clicked(self.reset)
-        self.slider_speed.on_changed(self._on_speed_change)
+            self.btn_play.on_clicked(self.toggle_play)
+            self.btn_step.on_clicked(self.step_once)
+            self.btn_reset.on_clicked(self.reset)
+            self.slider_speed.on_changed(self._on_speed_change)
 
         self.is_paused = False
         self.current_render_idx = -1
@@ -340,26 +351,23 @@ class SortAnimationController:
 
         self.render_frame(0)
 
-        self.animation = FuncAnimation(
-            self.fig,
-            self._tick,
-            init_func=self._init_frame,
-            frames=self._frame_iterator,
-            interval=self.interval,
-            blit=False,
-            cache_frame_data=False,
-            repeat=False,
-        )
+        if external_ui is not None and external_ui.get("manage_animation") is False:
+            self.animation = None
+        else:
+            self.animation = FuncAnimation(
+                self.fig,
+                self._tick,
+                init_func=self._init_frame,
+                frames=self._frame_iterator,
+                interval=self.interval,
+                blit=False,
+                cache_frame_data=False,
+                repeat=False,
+            )
         self.fig._sortlab_controller = self
 
     def _init_frame(self):
         return self.render_frame(0)
-
-    def _frame_iterator(self):
-        idx = 1
-        while idx < self.total_rendered:
-            yield idx
-            idx = self.current_render_idx + 1
 
     def _tick(self, _frame: int):
         if self.is_paused:
@@ -368,8 +376,9 @@ class SortAnimationController:
         if next_idx >= self.total_rendered:
             self.is_paused = True
             self.btn_play.label.set_text("Play")
-            if self.animation.event_source is not None:
-                self.animation.event_source.stop()
+            anim = getattr(self, "animation", None)
+            if anim is not None and anim.event_source is not None:
+                anim.event_source.stop()
             return tuple(self.bars)
         return self.render_frame(next_idx)
 
@@ -487,45 +496,6 @@ class SortAnimationController:
             self.is_paused = True
             self.btn_play.label.set_text("Play")
         return tuple(self.bars)
-
-    def toggle_play(self, _event=None) -> None:
-        if self.is_paused:
-            if self.current_render_idx >= self.total_rendered - 1:
-                self.render_frame(0)
-                self.animation.frame_seq = self.animation.new_frame_seq()
-            self.is_paused = False
-            self.btn_play.label.set_text("Pause")
-            if self.animation.event_source is not None:
-                self.animation.event_source.start()
-        else:
-            self.is_paused = True
-            self.btn_play.label.set_text("Play")
-            if self.animation.event_source is not None:
-                self.animation.event_source.stop()
-        self.fig.canvas.draw_idle()
-
-    def step_once(self, _event=None) -> None:
-        self.is_paused = True
-        self.btn_play.label.set_text("Play")
-        if self.animation.event_source is not None:
-            self.animation.event_source.stop()
-        if self.current_render_idx + 1 < self.total_rendered:
-            self.render_frame(self.current_render_idx + 1)
-            self.fig.canvas.draw_idle()
-
-    def reset(self, _event=None) -> None:
-        self.is_paused = True
-        self.btn_play.label.set_text("Play")
-        if self.animation.event_source is not None:
-            self.animation.event_source.stop()
-        self.render_frame(0)
-        self.animation.frame_seq = self.animation.new_frame_seq()
-        self.fig.canvas.draw_idle()
-
-    def _on_speed_change(self, val: float) -> None:
-        self.interval = int(val)
-        if self.animation.event_source is not None:
-            self.animation.event_source.interval = self.interval
 
 
 def animate_events(
