@@ -1,4 +1,4 @@
-"""Core event engine and algorithm registry for SortLab."""
+"""Core event engine and algorithm registry for AlgoLab."""
 
 from .events import (
     SnapshotTracker,

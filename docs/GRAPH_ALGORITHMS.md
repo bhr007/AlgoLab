@@ -1,6 +1,6 @@
-# Graph Algorithms in SortLab
+# Graph Algorithms in AlgoLab
 
-This document describes SortLab's `Graph` model, self-loop and parallel-edge policies, standardized graph events, and the seven implemented graph algorithms.
+This document describes AlgoLab's `Graph` model, self-loop and parallel-edge policies, standardized graph events, and the seven implemented graph algorithms.
 
 ## Graph Model (`sortlab.graphs.Graph`)
 

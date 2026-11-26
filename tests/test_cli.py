@@ -274,4 +274,16 @@ def test_cli_gui_flag_and_menu_option(capsys):
     ):
         assert cli.main([]) == 0
     mock_gui.assert_called_once_with(default_interval=None, show=True)
-    assert "Goodbye!" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "AlgoLab" in out
+    assert "Goodbye!" in out
+
+
+def test_cli_algolab_branding_help(capsys):
+    with pytest.raises(SystemExit) as exc_info:
+        cli.main(["--help"])
+    assert exc_info.value.code == 0
+    help_text = capsys.readouterr().out
+    assert "algolab" in help_text
+    assert "AlgoLab" in help_text
+    assert "Explore. Visualize. Understand Algorithms." in help_text

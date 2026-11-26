@@ -1,4 +1,4 @@
-"""Depth-First Search (DFS) implementation for SortLab graphs."""
+"""Depth-First Search (DFS) implementation for AlgoLab graphs."""
 
 from __future__ import annotations
 

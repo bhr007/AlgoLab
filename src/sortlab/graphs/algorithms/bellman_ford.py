@@ -1,4 +1,4 @@
-"""Bellman-Ford shortest-path algorithm for SortLab graphs."""
+"""Bellman-Ford shortest-path algorithm for AlgoLab graphs."""
 
 from __future__ import annotations
 

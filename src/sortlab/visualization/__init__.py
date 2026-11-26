@@ -1,4 +1,4 @@
-"""Optional visualization tools. Install with: pip install sortlab[visualization]."""
+"""Optional visualization tools. Install with: pip install algolab[visualization]."""
 
 from .graph_matplotlib import animate_graph_events
 from .matplotlib import animate_events

@@ -1,11 +1,12 @@
-"""Single-window native Matplotlib desktop studio and input validation for SortLab.
+"""Single-window native Matplotlib desktop studio and input validation for AlgoLab.
 
 Provides:
 - Input validation helpers (:func:`build_sorting_request`, :func:`build_graph_request`)
   shared across CLI and GUI workflows.
-- :class:`SortLabStudio`, a responsive single-window Matplotlib desktop interface
-  combining guided Sorting & Graph controls, complexity/constraint cards, quick
-  educational presets, and live animation playback without requiring a browser.
+- :class:`AlgoLabStudio` (aliased as :class:`SortLabStudio` for compatibility), a
+  responsive single-window Matplotlib desktop interface combining guided Sorting
+  & Graph controls, complexity/constraint cards, quick educational presets, and
+  live animation playback without requiring a browser.
 """
 
 from __future__ import annotations
@@ -295,7 +296,7 @@ def _stop_macosx_event_loop() -> None:
         _macosx.stop()
 
 
-class SortLabStudio:
+class AlgoLabStudio:
     """Single-window native Matplotlib GUI combining guided inputs and live playback."""
 
     def __init__(
@@ -309,7 +310,7 @@ class SortLabStudio:
         from matplotlib.widgets import Button, RadioButtons, Slider, TextBox
 
         self.fig = fig
-        self.fig.set_facecolor("#EEF2F6")
+        self.fig.set_facecolor("#F3F5F8")
         self.mode = "graph" if initial_mode == "graph" else "sorting"
         self.default_interval = (
             default_interval if default_interval is not None else 160
@@ -367,23 +368,23 @@ class SortLabStudio:
         # Sidebar Header.
         self.fig.text(
             0.03,
-            0.956,
-            "SortLab Studio",
+            0.958,
+            "AlgoLab Studio",
             ha="left",
             va="top",
             fontsize=14,
             fontweight="bold",
-            color="#0F172A",
+            color="#17243A",
         )
         self.fig.text(
             0.03,
-            0.920,
+            0.922,
             "1. Choose Mode",
             ha="left",
             va="top",
             fontsize=9.2,
             fontweight="bold",
-            color="#475569",
+            color="#17243A",
         )
 
         # Mode switch buttons (switch tabs and show paused Step-0 preview).
@@ -414,17 +415,18 @@ class SortLabStudio:
         # ---------------- Sorting Controls ----------------
         self._sort_widgets: list[tuple[Any, Any]] = []
         ax_sort_radio = self.fig.add_axes(
-            [0.03, 0.592, 0.31, 0.235], facecolor="#F8FAFC"
+            [0.03, 0.592, 0.31, 0.235], facecolor="#F3F5F8"
         )
         self._sort_name_to_key = {spec.name: spec.key for spec in ALGORITHM_SPECS}
         self.radio_sort = RadioButtons(
             ax_sort_radio,
             [spec.name for spec in ALGORITHM_SPECS],
             active=0,
-            activecolor="#2563EB",
+            activecolor="#FF9B45",
         )
         for lbl in self.radio_sort.labels:
             lbl.set_fontsize(8.7)
+            lbl.set_color("#17243A")
         self.radio_sort.on_clicked(self._on_sort_radio_clicked)
         self._sort_widgets.append((self.radio_sort, ax_sort_radio))
 
@@ -435,11 +437,11 @@ class SortLabStudio:
             ha="left",
             va="top",
             fontsize=8.2,
-            color="#1E3A8A",
+            color="#17243A",
             bbox={
                 "boxstyle": "round,pad=0.3",
-                "facecolor": "#EFF6FF",
-                "edgecolor": "#BFDBFE",
+                "facecolor": "#F3F5F8",
+                "edgecolor": "#CBD5E1",
             },
         )
         self.sort_step3_text = self.fig.text(
@@ -492,7 +494,7 @@ class SortLabStudio:
         # ---------------- Graph Controls ----------------
         self._graph_widgets: list[tuple[Any, Any]] = []
         ax_graph_radio = self.fig.add_axes(
-            [0.03, 0.635, 0.31, 0.192], facecolor="#F8FAFC"
+            [0.03, 0.635, 0.31, 0.192], facecolor="#F3F5F8"
         )
         self._graph_name_to_key = {
             spec.name: spec.key for spec in GRAPH_ALGORITHM_SPECS
@@ -501,10 +503,11 @@ class SortLabStudio:
             ax_graph_radio,
             [spec.name for spec in GRAPH_ALGORITHM_SPECS],
             active=0,
-            activecolor="#2563EB",
+            activecolor="#FF9B45",
         )
         for lbl in self.radio_graph.labels:
             lbl.set_fontsize(8.5)
+            lbl.set_color("#17243A")
         self.radio_graph.on_clicked(self._on_graph_radio_clicked)
         self._graph_widgets.append((self.radio_graph, ax_graph_radio))
 
@@ -515,11 +518,11 @@ class SortLabStudio:
             ha="left",
             va="top",
             fontsize=8.1,
-            color="#1E3A8A",
+            color="#17243A",
             bbox={
                 "boxstyle": "round,pad=0.28",
-                "facecolor": "#EFF6FF",
-                "edgecolor": "#BFDBFE",
+                "facecolor": "#F3F5F8",
+                "edgecolor": "#CBD5E1",
             },
         )
         self.graph_step3_text = self.fig.text(
@@ -589,10 +592,10 @@ class SortLabStudio:
         self.btn_run = Button(
             self.fig.add_axes([0.03, 0.234, 0.21, 0.048]),
             "Run & Visualize",
-            color="#16A34A",
-            hovercolor="#15803D",
+            color="#FF9B45",
+            hovercolor="#F08A30",
         )
-        self.btn_run.label.set_color("#FFFFFF")
+        self.btn_run.label.set_color("#17243A")
         self.btn_run.label.set_fontweight("bold")
         self.btn_run.label.set_fontsize(10.0)
         self.btn_run.on_clicked(self.run_current)
@@ -600,10 +603,10 @@ class SortLabStudio:
         self.btn_exit = Button(
             self.fig.add_axes([0.25, 0.234, 0.09, 0.048]),
             "Exit",
-            color="#FEE2E2",
+            color="#F3F5F8",
             hovercolor="#FCA5A5",
         )
-        self.btn_exit.label.set_color("#991B1B")
+        self.btn_exit.label.set_color("#17243A")
         self.btn_exit.label.set_fontweight("bold")
         self.btn_exit.on_clicked(self.close)
 
@@ -614,10 +617,10 @@ class SortLabStudio:
             ha="left",
             va="top",
             fontsize=8.4,
-            color="#1E293B",
+            color="#17243A",
             bbox={
                 "boxstyle": "round,pad=0.35",
-                "facecolor": "#F8FAFC",
+                "facecolor": "#F3F5F8",
                 "edgecolor": "#CBD5E1",
             },
         )
@@ -626,12 +629,12 @@ class SortLabStudio:
         self.title_text = self.fig.text(
             0.68,
             0.955,
-            "SortLab",
+            "AlgoLab",
             ha="center",
             va="top",
             fontsize=13.5,
             fontweight="bold",
-            color="#0F172A",
+            color="#17243A",
         )
         self.operation_text = self.fig.text(
             0.68,
@@ -640,7 +643,7 @@ class SortLabStudio:
             ha="center",
             va="top",
             fontsize=10.0,
-            color="#334155",
+            color="#17243A",
         )
         self.counter_text = self.fig.text(
             0.68,
@@ -649,11 +652,11 @@ class SortLabStudio:
             ha="center",
             va="top",
             fontsize=8.9,
-            color="#1F2933",
+            color="#17243A",
             bbox={
                 "boxstyle": "round,pad=0.28",
-                "facecolor": "#F3F4F6",
-                "edgecolor": "#D1D5DB",
+                "facecolor": "#F3F5F8",
+                "edgecolor": "#CBD5E1",
             },
         )
         self.summary_text = self.fig.text(
@@ -663,10 +666,10 @@ class SortLabStudio:
             ha="center",
             va="center",
             fontsize=8.7,
-            color="#1F2933",
+            color="#17243A",
             bbox={
                 "boxstyle": "round,pad=0.28",
-                "facecolor": "#F8FAFC",
+                "facecolor": "#F3F5F8",
                 "edgecolor": "#CBD5E1",
             },
         )
@@ -721,6 +724,7 @@ class SortLabStudio:
         self._select_sort_algo(self.selected_sort_key, redraw=False)
         self._select_graph_algo(self.selected_graph_key, redraw=False)
         self.switch_mode(self.mode, run_preview=True, auto_play=False)
+        self.fig._algolab_studio = self
         self.fig._sortlab_studio = self
 
     def _blur_textbox(self, tb: Any) -> None:
@@ -800,11 +804,11 @@ class SortLabStudio:
             for line in message.splitlines()
         ]
         self.status_text.set_text("\n".join(wrapped_lines))
-        self.status_text.set_color("#B91C1C" if is_error else "#1E293B")
+        self.status_text.set_color("#B91C1C" if is_error else "#17243A")
         self.status_text.set_bbox(
             {
                 "boxstyle": "round,pad=0.35",
-                "facecolor": "#FEF2F2" if is_error else "#F8FAFC",
+                "facecolor": "#FEF2F2" if is_error else "#F3F5F8",
                 "edgecolor": "#FECACA" if is_error else "#CBD5E1",
             }
         )
@@ -815,13 +819,13 @@ class SortLabStudio:
             hover = "#E2E8F0"
             fg = "#94A3B8"
         elif selected:
-            color = "#2563EB"
-            hover = "#1D4ED8"
+            color = "#17243A"
+            hover = "#243656"
             fg = "#FFFFFF"
         else:
-            color = "#F1F5F9"
+            color = "#F3F5F8"
             hover = "#CBD5E1"
-            fg = "#0F172A"
+            fg = "#17243A"
         btn.color = color
         btn.hovercolor = hover
         btn.ax.set_facecolor(color)
@@ -1310,26 +1314,30 @@ class SortLabStudio:
         self.active_controller = None
 
 
+# Backward-compatible class alias for callers importing SortLabStudio.
+SortLabStudio = AlgoLabStudio
+
+
 def launch_gui_studio(
     *,
     initial_mode: str = "sorting",
     default_interval: int | None = None,
     show: bool = True,
-) -> SortLabStudio:
-    """Open the single-window SortLab Matplotlib Studio."""
+) -> AlgoLabStudio:
+    """Open the single-window AlgoLab Matplotlib Studio."""
     try:
         import matplotlib.pyplot as plt
     except ImportError as exc:
         raise ImportError(
-            "Matplotlib is optional. Install it with: pip install sortlab[visualization]"
+            "Matplotlib is optional. Install it with: pip install algolab[visualization]"
         ) from exc
 
     fig = plt.figure(figsize=(14.2, 8.4))
     manager = getattr(fig.canvas, "manager", None)
     if manager is not None and hasattr(manager, "set_window_title"):
-        manager.set_window_title("SortLab — Desktop Studio")
+        manager.set_window_title("AlgoLab — Desktop Studio")
 
-    studio = SortLabStudio(
+    studio = AlgoLabStudio(
         fig,
         initial_mode=initial_mode,
         default_interval=default_interval,

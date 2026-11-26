@@ -1,28 +1,46 @@
-# SortLab
+# AlgoLab
 
 **Explore. Visualize. Understand Algorithms.**
 
-SortLab is an educational, open-source Python reference library for **sorting algorithms** and **graph algorithms**. It brings together readable pure-Python implementations, standardized JSON-serializable event engines, interactive Matplotlib visualizations, an interactive CLI with automatic visualization launch, performance benchmarks, and learner-focused documentation.
+[![Tests](https://github.com/bhr007/AlgoLab/actions/workflows/tests.yml/badge.svg)](https://github.com/bhr007/AlgoLab/actions/workflows/tests.yml)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-17243A.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-FF9B45.svg)](LICENSE)
+
+**AlgoLab** is an educational and developer-focused, open-source Python platform for algorithm visualization, experimentation, and benchmarking. It brings together readable pure-Python implementations of foundational **sorting** and **graph** algorithms, standardized JSON-serializable event engines, an interactive single-window desktop studio, a guided CLI, performance benchmarks, and clear technical documentation.
 
 > **Project status:** Early development (v0.1.0). APIs may evolve before the first stable release.
+>
+> **Rebrand & compatibility note:** Formerly *SortLab*. The distribution name and primary CLI command are now `algolab`, while the `sortlab` Python import package (`import sortlab`) and `sortlab` CLI alias are preserved for backward compatibility.
 
-## What is included?
+---
 
-- Clear, pure-Python implementations of **10 sorting algorithms** (`sortlab.algorithms`) and **7 graph algorithms** (`sortlab.graphs`), completely independent of Matplotlib.
-- Standardized, JSON-serializable event engines (`sortlab.core` for sorting; `sortlab.graphs.events` for graphs) with strict `to_dict()` / `from_dict()` / JSON export.
-- Reusable `Graph` adjacency-list model (`sortlab.graphs.model`) supporting directed/undirected, weighted/unweighted, and disconnected graphs with explicit self-loop and parallel-edge policies.
-- Central registries (`ALGORITHM_REGISTRY`, `GRAPH_ALGORITHM_REGISTRY`) with per-algorithm constraint validation.
-- Dedicated Matplotlib animation renderers (`sortlab.visualization.matplotlib` and `sortlab.visualization.graph_matplotlib`) with color-coded states, live HUD counters, distance/weight annotations, deterministic graph layout (no NetworkX required), and playback controls (`Pause`/`Play`, `Step`, `Reset`, `Delay (ms)`).
-- An interactive CLI (`sortlab`) with a main menu for **Sorting Algorithms**, **Graph Algorithms**, and **Exit**, automatic input validation, pure algorithm timing, and automatic visualization launch.
-- Simple sorting benchmarking utilities (`sortlab.benchmarks`) kept strictly separate from visualization timing.
+## Feature Overview
 
-## Quick start
+- **Pure-Python Algorithm Implementations:**
+  - **10 Sorting Algorithms** (`sortlab.algorithms`): Comparison, divide-and-conquer, non-comparison, and distribution-based sorts, completely decoupled from Matplotlib.
+  - **7 Graph Algorithms** (`sortlab.graphs`): Traversal, shortest-path, minimum spanning tree/forest, and DAG topological ordering, completely decoupled from Matplotlib.
+- **Reusable Graph Data Model (`sortlab.graphs.model`):** Supports directed/undirected, weighted/unweighted, empty, and disconnected graphs via deterministic insertion-ordered adjacency lists with explicit self-loop and parallel-edge validation policies.
+- **Standardized Event Engines:** Renderer-independent, JSON-serializable `SortEvent` (`sortlab.core`) and `GraphEvent` (`sortlab.graphs.events`) streams with strict `to_dict()` / `from_dict()` / JSON export.
+- **Central Registries & Validation:** `ALGORITHM_REGISTRY` and `GRAPH_ALGORITHM_REGISTRY` enforce algorithm-specific input constraints before execution.
+- **Single-Window Desktop Studio (`algolab --gui`):** Native Matplotlib desktop UI combining mode selection, algorithm guides, presets, input validation, pure timing, and live animation playback controls in one window.
+- **Interactive CLI (`algolab`):** Choose between **CLI-only** (`--mode cli`), **CLI + Visualization** (default), or **Single-Window GUI Studio** (`--gui` / `--mode gui`).
+- **Honest Benchmarking (`sortlab.benchmarks`):** Pure algorithm timing kept strictly separate from event generation and GUI rendering.
 
-For detailed OS-specific instructions (macOS, Linux, Windows PowerShell), see [docs/EXECUTION_GUIDE.md](docs/EXECUTION_GUIDE.md).
+### Visual Identity
+
+| Role | Color | Hex |
+|---|---|---|
+| Primary (Deep Navy) | Brand headers, active selections, primary graph nodes | `#17243A` |
+| Accent (Orange) | Primary actions, active comparisons & edge explorations | `#FF9B45` |
+| Surface (Light Gray) | Studio canvas, HUD counters, constraint badges | `#F3F5F8` |
+
+---
+
+## Installation
 
 ```bash
-git clone https://github.com/bhr007/SortLab.git
-cd sortlab
+git clone https://github.com/bhr007/AlgoLab.git
+cd AlgoLab
 python -m venv .venv
 # macOS / Linux:
 source .venv/bin/activate
@@ -32,40 +50,47 @@ source .venv/bin/activate
 pip install -e ".[dev,visualization]"
 ```
 
-Run the interactive CLI (automatically launches Matplotlib visualization):
+For full OS-specific setup instructions (macOS, Linux, Windows PowerShell), see [docs/EXECUTION_GUIDE.md](docs/EXECUTION_GUIDE.md).
+
+---
+
+## CLI & GUI Usage
+
+Launch **AlgoLab** in the mode that fits your workflow:
 
 ```bash
-sortlab
-# or without installing the entrypoint:
-python -m sortlab.cli
+algolab --gui            # Launch the single-window Desktop GUI Studio (no browser)
+algolab                  # Interactive CLI menu + automatic Matplotlib visualization
+algolab --mode cli       # Run strictly in terminal (CLI-only, no GUI windows)
+algolab --mode cli-gui   # Same as default: interactive CLI + Matplotlib visualization
+algolab --mode gui       # Same as --gui: single-window Desktop GUI Studio
+algolab --list           # List all sorting and graph algorithms and exit
+algolab --interval 200   # Override animation frame delay in milliseconds
+algolab --no-vis         # Print algorithm output and timing without opening GUI
 ```
 
-Useful CLI options:
+> Both `algolab` and the legacy `sortlab` command (as well as `python -m sortlab.cli`) invoke the same CLI entrypoint.
+
+### Interactive CLI Workflow
+
+1. At the **Main Menu**, choose:
+   - `1` — **Sorting Algorithms (CLI + Visualization)**
+   - `2` — **Graph Algorithms (CLI + Visualization)**
+   - `3` — **Launch Desktop GUI Studio (Single Window)**
+   - `0` — **Exit**
+2. **Sorting Algorithms:** Pick an algorithm (`1–10`) and enter space- or comma-separated numbers (e.g., `8, 3, 5, 1, 9, 2`).
+3. **Graph Algorithms:** Pick an algorithm (`1–7`), configure directed/weighted options when applicable, optionally enter isolated node names, enter edges (`A B, B C` for unweighted or `A B 4, B C 2` for weighted), and enter a start node when needed.
+4. AlgoLab validates inputs, prints the pure algorithm result and execution time, and launches the animated visualization.
+
+### Automated Input Example
 
 ```bash
-sortlab --gui            # Launch the single-window native Desktop GUI Studio (no browser)
-sortlab --mode cli       # Run strictly in terminal (CLI-only, no GUI windows)
-sortlab --mode cli-gui   # Default: interactive terminal menus + Matplotlib visualization
-sortlab --mode gui       # Same as --gui: run entirely in the single-window GUI Studio
-sortlab --list           # List all sorting and graph algorithms and exit
-sortlab --interval 200   # Override animation frame delay in milliseconds
-sortlab --no-vis         # Print algorithm output and pure execution time without opening GUI
+algolab --mode cli < examples/automated_input.txt
 ```
 
-### Interactive CLI Guide
+---
 
-1. At the **Main Menu**, choose `1` for **Sorting Algorithms (CLI + Visualization)**, `2` for **Graph Algorithms (CLI + Visualization)**, `3` to **Launch Desktop GUI Studio (Single Window)**, or `0` to **Exit**.
-2. In **Sorting Algorithms**, choose an algorithm (`1–10`) and enter space- or comma-separated numbers (e.g., `8, 3, 5, 1, 9, 2`).
-3. In **Graph Algorithms**, choose an algorithm (`1–7`):
-   - Choose directed/undirected and weighted/unweighted when not fixed by the algorithm.
-   - Optionally enter node names (useful for isolated nodes in disconnected graphs), or press Enter to infer nodes from edges.
-   - Enter edges separated by commas or semicolons:
-     - Unweighted: `A B, B C, A C` (or `A->B, B->C`)
-     - Weighted: `A B 4, B C 2, A C 7`
-   - Enter a starting node when required (BFS, DFS, Dijkstra, Bellman-Ford; optional for Prim).
-   - SortLab validates inputs, prints the pure algorithm result and execution time, and opens the animated graph visualization.
-
-Run algorithms directly in Python:
+## Python API Quick Start
 
 ```python
 from sortlab.algorithms import bubble_sort, merge_sort
@@ -84,21 +109,18 @@ shortest = dijkstra(graph, "A")
 print(shortest.distances, shortest.path_to("D"))
 ```
 
-Run an example visualization or benchmark:
+Run standalone examples:
 
 ```bash
 python examples/visualize_bubble_sort.py
 python examples/benchmark_algorithms.py
 ```
 
-Run the test suite and linter:
+---
 
-```bash
-pytest
-ruff check .
-```
+## Algorithm Categories
 
-## Sorting Algorithm Collection
+### Sorting Algorithms (10)
 
 | # | Algorithm | Category | Input constraints | Stable | Typical time |
 |---:|---|---|---|---:|---:|
@@ -113,7 +135,7 @@ ruff check .
 | 9 | Radix Sort | Non-comparison | **Integers only** (negatives supported) | Yes, in this implementation | O(d(n + b)) |
 | 10 | Bucket Sort | Distribution-based | Finite numbers (`int`, `float`) | Depends on bucket sort | Expected linear under assumptions |
 
-## Graph Algorithm Collection
+### Graph Algorithms (7)
 
 See [docs/GRAPH_ALGORITHMS.md](docs/GRAPH_ALGORITHMS.md) for full details, constraints, and edge-case policies.
 
@@ -127,43 +149,37 @@ See [docs/GRAPH_ALGORITHMS.md](docs/GRAPH_ALGORITHMS.md) for full details, const
 | 6 | Kruskal's Minimum Spanning Tree | MST / Forest | **Undirected** graphs; supports negative weights | O(E log E) | O(V + E) |
 | 7 | Topological Sort (Kahn's) | DAG Ordering | **Directed acyclic graphs (DAGs)** only; detects cycles | O(V + E) | O(V) |
 
-## Visualization Features
+---
 
-### Sorting Visualizer (`sortlab.visualization.matplotlib`)
-- **Color-coded states:** `unsorted`, `compare`, `swap`, `write`, `pivot`, `merge`, `heapify`, `bucket_distribute`, and `mark_sorted`/`complete`.
-- **Live HUD:** algorithm title, active operation description, and cumulative counters (`Step`, `Comparisons`, `Swaps`, `Writes`, plus `Merges`/`Pivots`/`Heap ops`/`Buckets` when applicable).
-- **Value labels:** displayed on bars for arrays of up to 30 elements; negative and zero values are supported.
-- **Interactive controls:** `Pause`/`Play`, `Step`, `Reset`, and a `Delay (ms)` slider.
+## Architecture
 
-### Graph Visualizer (`sortlab.visualization.graph_matplotlib`)
-- **Deterministic lightweight layout:** pure-Python circular + force-directed layout (`compute_graph_layout`) with no NetworkX dependency.
-- **Graph elements:** directed arrows (with curved arcs for bidirectional pairs and self-loops), undirected edges, weight badges, node state colors (`unvisited`, `frontier`, `current`, `visited`, `cycle`), and live per-node distance/key badges.
-- **Edge highlights:** active exploration/relaxation edges, selected tree/path edges, rejected edges, and detected cycle edges.
-- **Live HUD & controls:** step/visited/edge counters, traversal/topological order, frontier, distances, and `Pause`/`Play`, `Step`, `Reset`, `Delay (ms)` playback controls.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for full design details. AlgoLab separates concerns cleanly across modules:
 
-## Design principles
+- `src/sortlab/algorithms/` — Pure sorting functions (no Matplotlib dependency).
+- `src/sortlab/core/` — Sorting `SortEvent` engine, `SnapshotTracker`, event runners, and `ALGORITHM_REGISTRY`.
+- `src/sortlab/graphs/` — `Graph` model, 7 graph algorithms, `GraphEvent` engine, event runners, and `GRAPH_ALGORITHM_REGISTRY`.
+- `src/sortlab/visualization/` — Shared Matplotlib renderers (`matplotlib.py`, `graph_matplotlib.py`, `_playback.py`) with color-coded states, HUD counters, deterministic lightweight graph layout (no NetworkX), and playback controls.
+- `src/sortlab/gui.py` — Single-window `AlgoLabStudio` desktop UI.
+- `src/sortlab/cli.py` — Interactive CLI (`algolab` / `sortlab`).
+- `src/sortlab/benchmarks/` — Uninstrumented algorithm timing helpers.
 
-1. **Readable first:** implementations should be approachable to learners.
-2. **Correctness matters:** algorithms, edge cases, and event streams are thoroughly tested.
-3. **Renderer-independent events:** visualizers consume `SortEvent` and `GraphEvent` streams without embedding algorithm logic.
-4. **Honest timing:** pure algorithm timing in the CLI and benchmarks is kept separate from event generation and GUI rendering.
-5. **Contributions welcome:** follow [CONTRIBUTING.md](CONTRIBUTING.md).
+---
 
-## Roadmap
+## Testing & Linting
 
-- [x] Initial package structure and development tooling
-- [x] Ten foundational sorting algorithms with shared `SortEvent` engine
-- [x] Shared Matplotlib sorting visualizer with controls and CLI auto-launch
-- [x] Graph model, 7 foundational graph algorithms, `GraphEvent` engine, and Matplotlib graph visualizer
-- [x] Unified interactive CLI main menu for Sorting and Graph algorithms
-- [x] Basic sorting benchmark utilities
-- [ ] Graph benchmarking utilities and algorithm comparison views
-- [ ] Browser-based interactive playground (future direction using JSON-serialized event streams)
+Run the full test suite and linter:
 
-## License
+```bash
+pytest -v
+ruff check .
+```
 
-SortLab is released under the [MIT License](LICENSE).
+---
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and our [Code of Conduct](CODE_OF_CONDUCT.md) before opening a pull request.
+
+## License
+
+AlgoLab is released under the [MIT License](LICENSE).

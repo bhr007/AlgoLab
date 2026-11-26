@@ -1,6 +1,8 @@
 # Architecture
 
-SortLab separates algorithm logic, event streams, registries, visualization frontends, and CLI interaction across both Sorting and Graph modules so implementations stay readable, timings stay accurate, and visualizers remain decoupled.
+AlgoLab separates algorithm logic, event streams, registries, visualization frontends, and CLI/GUI interaction across both Sorting and Graph modules so implementations stay readable, timings stay accurate, and visualizers remain decoupled.
+
+> **Package compatibility note:** The Python import package remains `sortlab` (`src/sortlab/`) for backward compatibility.
 
 ## Package Overview
 
@@ -20,7 +22,8 @@ SortLab separates algorithm logic, event streams, registries, visualization fron
    - `matplotlib.py`: Optional Matplotlib sorting renderer (`SortAnimationController`, `animate_events`).
    - `graph_matplotlib.py`: Optional Matplotlib graph renderer (`GraphAnimationController`, `animate_graph_events`, and deterministic `compute_graph_layout` without NetworkX).
 5. **Benchmarks (`src/sortlab/benchmarks/runner.py`):** Pure timing helper (`benchmark`) measuring uninstrumented sorting functions, kept separate from event generation and GUI rendering.
-6. **Interactive CLI (`src/sortlab/cli.py`):** Provides a top-level menu (`1. Sorting Algorithms`, `2. Graph Algorithms`, `0. Exit`), validates inputs per algorithm, times pure algorithm execution, and automatically launches the corresponding Matplotlib visualizer.
+6. **Desktop GUI Studio (`src/sortlab/gui.py`):** Single-window native Matplotlib desktop UI (`AlgoLabStudio`, `launch_gui_studio`) combining mode selection, algorithm guides, inputs, presets, and live playback.
+7. **Interactive CLI (`src/sortlab/cli.py`):** Provides a top-level menu (`1. Sorting Algorithms`, `2. Graph Algorithms`, `3. Launch Desktop GUI Studio`, `0. Exit`), validates inputs per algorithm, times pure algorithm execution, and launches the corresponding visualizer or Studio.
 
 ---
 

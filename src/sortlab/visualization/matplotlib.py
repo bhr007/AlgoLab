@@ -1,4 +1,4 @@
-"""Shared Matplotlib renderer for SortLab event streams."""
+"""Shared Matplotlib renderer for AlgoLab sorting event streams."""
 
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ from ._playback import (
 )
 
 STATE_COLORS: dict[str, str] = {
-    "unsorted": "#4C78A8",
-    SortEventType.COMPARE.value: "#F58518",
+    "unsorted": "#17243A",
+    SortEventType.COMPARE.value: "#FF9B45",
     SortEventType.SWAP.value: "#E45756",
     SortEventType.WRITE.value: "#B279A2",
     SortEventType.PIVOT.value: "#EECA3B",
@@ -250,16 +250,17 @@ class SortAnimationController(PlaybackControllerMixin):
             self.title_text = external_ui["title_text"]
             self.operation_text = external_ui["operation_text"]
             self.counter_text = external_ui["counter_text"]
-            self.title_text.set_text(f"SortLab — {self.algorithm_name}")
+            self.title_text.set_text(f"AlgoLab — {self.algorithm_name}")
         else:
             self.title_text = self.fig.text(
                 0.5,
                 0.945,
-                f"SortLab — {self.algorithm_name}",
+                f"AlgoLab — {self.algorithm_name}",
                 ha="center",
                 va="top",
                 fontsize=14,
                 fontweight="bold",
+                color="#17243A",
             )
             self.operation_text = self.fig.text(
                 0.5,
@@ -268,7 +269,7 @@ class SortAnimationController(PlaybackControllerMixin):
                 ha="center",
                 va="top",
                 fontsize=10.5,
-                color="#333333",
+                color="#17243A",
             )
             self.counter_text = self.fig.text(
                 0.5,
@@ -277,8 +278,8 @@ class SortAnimationController(PlaybackControllerMixin):
                 ha="center",
                 va="top",
                 fontsize=9.5,
-                color="#1F2933",
-                bbox={"boxstyle": "round,pad=0.3", "facecolor": "#F3F4F6", "edgecolor": "#D1D5DB"},
+                color="#17243A",
+                bbox={"boxstyle": "round,pad=0.3", "facecolor": "#F3F5F8", "edgecolor": "#D1D5DB"},
             )
 
         # Build compact legend containing states present in this event stream.
@@ -364,6 +365,7 @@ class SortAnimationController(PlaybackControllerMixin):
                 cache_frame_data=False,
                 repeat=False,
             )
+        self.fig._algolab_controller = self
         self.fig._sortlab_controller = self
 
     def _init_frame(self):
@@ -506,12 +508,12 @@ def animate_events(
     show: bool = True,
     max_frames: int | None = None,
 ):
-    """Animate SortLab events. Requires the optional Matplotlib dependency."""
+    """Animate AlgoLab events. Requires the optional Matplotlib dependency."""
     try:
         import matplotlib.pyplot as plt
     except ImportError as exc:
         raise ImportError(
-            "Matplotlib is optional. Install it with: pip install sortlab[visualization]"
+            "Matplotlib is optional. Install it with: pip install algolab[visualization]"
         ) from exc
 
     event_list = list(events)

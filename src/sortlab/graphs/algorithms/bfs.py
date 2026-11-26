@@ -1,4 +1,4 @@
-"""Breadth-First Search (BFS) implementation for SortLab graphs."""
+"""Breadth-First Search (BFS) implementation for AlgoLab graphs."""
 
 from __future__ import annotations
 

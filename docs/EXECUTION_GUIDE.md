@@ -1,6 +1,8 @@
-# SortLab Execution Guide (macOS, Linux, Windows)
+# AlgoLab Execution Guide (macOS, Linux, Windows)
 
-This guide walks through setting up, running, and testing **SortLab** on **macOS**, **Linux**, and **Windows** (`Python >= 3.9` required).
+This guide walks through setting up, running, and testing **AlgoLab** on **macOS**, **Linux**, and **Windows** (`Python >= 3.9` required).
+
+> Both `algolab` and the legacy `sortlab` CLI alias (as well as `python -m sortlab.cli`) invoke the same entrypoint.
 
 ---
 
@@ -8,35 +10,35 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
 
 1. **Clone and enter the repository:**
    ```bash
-   git clone https://github.com/bhr007/SortLab.git
-   cd SortLab
+   git clone https://github.com/bhr007/AlgoLab.git
+   cd AlgoLab
    ```
 2. **Create and activate a virtual environment:**
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
-3. **Install SortLab with visualization and dev dependencies:**
+3. **Install AlgoLab with visualization and dev dependencies:**
    ```bash
    python -m pip install --upgrade pip
    pip install -e ".[dev,visualization]"
    ```
-4. **Run SortLab in your preferred mode:**
+4. **Run AlgoLab in your preferred mode:**
    - **Single-window Desktop GUI Studio (no browser):**
      ```bash
-     sortlab --gui
+     algolab --gui
      ```
    - **Interactive CLI + Matplotlib visualization:**
      ```bash
-     sortlab
+     algolab
      ```
    - **CLI-only (terminal only, no GUI windows):**
      ```bash
-     sortlab --mode cli
+     algolab --mode cli
      ```
    - **Automated CLI input run:**
      ```bash
-     sortlab --mode cli < examples/automated_input.txt
+     algolab --mode cli < examples/automated_input.txt
      ```
 5. **Run examples and tests:**
    ```bash
@@ -64,8 +66,8 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
      ```
 2. **Clone and enter the repository:**
    ```bash
-   git clone https://github.com/bhr007/SortLab.git
-   cd SortLab
+   git clone https://github.com/bhr007/AlgoLab.git
+   cd AlgoLab
    ```
 3. **Create and activate a virtual environment:**
    ```bash
@@ -77,11 +79,11 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
    python -m pip install --upgrade pip
    pip install -e ".[dev,visualization]"
    ```
-5. **Run SortLab:**
-   - **Single-window Desktop GUI Studio:** `sortlab --gui`
-   - **Interactive CLI + Matplotlib visualization:** `sortlab`
-   - **CLI-only (works over SSH / headless servers):** `sortlab --mode cli`
-   - **Automated CLI input run:** `sortlab --mode cli < examples/automated_input.txt`
+5. **Run AlgoLab:**
+   - **Single-window Desktop GUI Studio:** `algolab --gui`
+   - **Interactive CLI + Matplotlib visualization:** `algolab`
+   - **CLI-only (works over SSH / headless servers):** `algolab --mode cli`
+   - **Automated CLI input run:** `algolab --mode cli < examples/automated_input.txt`
 6. **Run examples and tests:**
    ```bash
    python examples/visualize_bubble_sort.py
@@ -96,8 +98,8 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
 1. **Install Python 3.9+ from [python.org](https://www.python.org/downloads/)** (standard installer includes `tkinter` for Matplotlib's `TkAgg` GUI backend; check **"Add python.exe to PATH"**).
 2. **Clone and enter the repository:**
    ```powershell
-   git clone https://github.com/bhr007/SortLab.git
-   cd SortLab
+   git clone https://github.com/bhr007/AlgoLab.git
+   cd AlgoLab
    ```
 3. **Create and activate a virtual environment:**
    ```powershell
@@ -110,22 +112,22 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
    python -m pip install --upgrade pip
    pip install -e ".[dev,visualization]"
    ```
-5. **Run SortLab:**
+5. **Run AlgoLab:**
    - **Single-window Desktop GUI Studio:**
      ```powershell
-     sortlab --gui
+     algolab --gui
      ```
    - **Interactive CLI + Matplotlib visualization:**
      ```powershell
-     sortlab
+     algolab
      ```
    - **CLI-only (no GUI windows):**
      ```powershell
-     sortlab --mode cli
+     algolab --mode cli
      ```
    - **Automated CLI input run in PowerShell** *(PowerShell pipes file contents with `Get-Content` instead of `<`)*:
      ```powershell
-     Get-Content examples\automated_input.txt | sortlab --mode cli
+     Get-Content examples\automated_input.txt | algolab --mode cli
      ```
 6. **Run examples and tests:**
    ```powershell
@@ -140,9 +142,9 @@ This guide walks through setting up, running, and testing **SortLab** on **macOS
 
 | Command | Mode | Description |
 |---|---|---|
-| `sortlab --gui` (or `--mode gui`) | GUI only | Opens the single-window Desktop Studio (Sorting + Graph tabs, presets, live playback). |
-| `sortlab` (or `--mode cli-gui`) | CLI + GUI | Interactive terminal menu with automatic Matplotlib visualization launch (option `3` opens the Studio). |
-| `sortlab --mode cli` (or `--no-vis`) | CLI only | Terminal-only execution and timing; never opens any GUI window. |
-| `sortlab --list` | Info | Lists all 10 sorting and 7 graph algorithms and exits. |
-| `sortlab --interval 200` | Timing option | Sets initial animation frame delay in milliseconds. |
-| `python -m sortlab.cli ...` | Fallback | Equivalent to `sortlab ...` if the `sortlab` script is not on `PATH`. |
+| `algolab --gui` (or `--mode gui`) | GUI only | Opens the single-window Desktop Studio (Sorting + Graph tabs, presets, live playback). |
+| `algolab` (or `--mode cli-gui`) | CLI + GUI | Interactive terminal menu with automatic Matplotlib visualization launch (option `3` opens the Studio). |
+| `algolab --mode cli` (or `--no-vis`) | CLI only | Terminal-only execution and timing; never opens any GUI window. |
+| `algolab --list` | Info | Lists all 10 sorting and 7 graph algorithms and exits. |
+| `algolab --interval 200` | Timing option | Sets initial animation frame delay in milliseconds. |
+| `sortlab ...` / `python -m sortlab.cli ...` | Compatibility | Legacy CLI alias and module invocation (kept for backward compatibility). |

@@ -1,4 +1,4 @@
-"""Shared playback helpers for SortLab Matplotlib animation controllers."""
+"""Shared playback helpers for AlgoLab Matplotlib animation controllers."""
 
 from __future__ import annotations
 

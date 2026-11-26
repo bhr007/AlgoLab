@@ -1,4 +1,4 @@
-"""Prim's Minimum Spanning Tree / Forest algorithm for SortLab graphs."""
+"""Prim's Minimum Spanning Tree / Forest algorithm for AlgoLab graphs."""
 
 from __future__ import annotations
 

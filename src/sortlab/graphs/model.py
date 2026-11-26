@@ -1,4 +1,4 @@
-"""Reusable graph data model, validation, and result containers for SortLab."""
+"""Reusable graph data model, validation, and result containers for AlgoLab."""
 
 from __future__ import annotations
 

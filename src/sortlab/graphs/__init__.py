@@ -1,4 +1,4 @@
-"""Graph algorithms, event engine, and registry for SortLab."""
+"""Graph algorithms, event engine, and registry for AlgoLab."""
 
 from .algorithms import (
     bellman_ford,

@@ -1,4 +1,4 @@
-"""Graph algorithm implementations for SortLab."""
+"""Graph algorithm implementations for AlgoLab."""
 
 from .bellman_ford import bellman_ford
 from .bfs import bfs

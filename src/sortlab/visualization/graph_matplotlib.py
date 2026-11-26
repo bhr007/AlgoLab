@@ -1,4 +1,4 @@
-"""Dedicated Matplotlib renderer for SortLab graph algorithm event streams."""
+"""Dedicated Matplotlib renderer for AlgoLab graph algorithm event streams."""
 
 from __future__ import annotations
 
@@ -20,16 +20,16 @@ from ._playback import (
 )
 
 NODE_STATE_COLORS: dict[str, str] = {
-    "unvisited": "#4C78A8",
+    "unvisited": "#17243A",
     "frontier": "#EECA3B",
-    "current": "#F58518",
+    "current": "#FF9B45",
     "visited": "#2E8B57",
     "cycle": "#E45756",
 }
 
 EDGE_STATE_COLORS: dict[str, str] = {
     "default": "#9AA5B1",
-    "active": "#F58518",
+    "active": "#FF9B45",
     "selected": "#2E8B57",
     "rejected": "#E45756",
     "cycle": "#E45756",
@@ -213,8 +213,8 @@ def _canonical_edge_key(
 
 
 def _node_label_color(hex_color: str) -> str:
-    if hex_color == NODE_STATE_COLORS["frontier"]:
-        return "#111827"
+    if hex_color in (NODE_STATE_COLORS["frontier"], NODE_STATE_COLORS["current"]):
+        return "#17243A"
     return "#FFFFFF"
 
 
@@ -424,17 +424,18 @@ class GraphAnimationController(PlaybackControllerMixin):
             self.counter_text = external_ui["counter_text"]
             self.summary_text = external_ui["summary_text"]
             self.title_text.set_text(
-                f"SortLab — {self.algorithm_name} ({', '.join(kind_parts)})"
+                f"AlgoLab — {self.algorithm_name} ({', '.join(kind_parts)})"
             )
         else:
             self.title_text = self.fig.text(
                 0.5,
                 0.955,
-                f"SortLab — {self.algorithm_name} ({', '.join(kind_parts)})",
+                f"AlgoLab — {self.algorithm_name} ({', '.join(kind_parts)})",
                 ha="center",
                 va="top",
                 fontsize=13.5,
                 fontweight="bold",
+                color="#17243A",
             )
             self.operation_text = self.fig.text(
                 0.5,
@@ -443,7 +444,7 @@ class GraphAnimationController(PlaybackControllerMixin):
                 ha="center",
                 va="top",
                 fontsize=10.5,
-                color="#333333",
+                color="#17243A",
             )
             self.counter_text = self.fig.text(
                 0.5,
@@ -452,10 +453,10 @@ class GraphAnimationController(PlaybackControllerMixin):
                 ha="center",
                 va="top",
                 fontsize=9.2,
-                color="#1F2933",
+                color="#17243A",
                 bbox={
                     "boxstyle": "round,pad=0.28",
-                    "facecolor": "#F3F4F6",
+                    "facecolor": "#F3F5F8",
                     "edgecolor": "#D1D5DB",
                 },
             )
@@ -466,10 +467,10 @@ class GraphAnimationController(PlaybackControllerMixin):
                 ha="center",
                 va="center",
                 fontsize=9.0,
-                color="#1F2933",
+                color="#17243A",
                 bbox={
                     "boxstyle": "round,pad=0.3",
-                    "facecolor": "#F8FAFC",
+                    "facecolor": "#F3F5F8",
                     "edgecolor": "#CBD5E1",
                 },
             )
@@ -539,6 +540,8 @@ class GraphAnimationController(PlaybackControllerMixin):
                 cache_frame_data=False,
                 repeat=False,
             )
+        self.fig._algolab_graph_controller = self
+        self.fig._algolab_controller = self
         self.fig._sortlab_graph_controller = self
         self.fig._sortlab_controller = self
 
@@ -724,12 +727,12 @@ def animate_graph_events(
     show: bool = True,
     max_frames: int | None = None,
 ):
-    """Animate SortLab graph events. Requires the optional Matplotlib dependency."""
+    """Animate AlgoLab graph events. Requires the optional Matplotlib dependency."""
     try:
         import matplotlib.pyplot as plt
     except ImportError as exc:
         raise ImportError(
-            "Matplotlib is optional. Install it with: pip install sortlab[visualization]"
+            "Matplotlib is optional. Install it with: pip install algolab[visualization]"
         ) from exc
 
     event_list = list(events)

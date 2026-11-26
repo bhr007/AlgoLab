@@ -1,4 +1,4 @@
-"""Central registry for SortLab graph algorithms and their event generators."""
+"""Central registry for AlgoLab graph algorithms and their event generators."""
 
 from __future__ import annotations
 

@@ -3,14 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "sortlab"
+name = "algolab"
 version = "0.1.0"
-description = "An educational, open-source collection of sorting algorithms, visualizations, and benchmarks."
+description = "AlgoLab — Explore. Visualize. Understand Algorithms. An educational and developer-focused, open-source Python platform for algorithm visualization, experimentation, and benchmarking."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
-authors = [{ name = "SortLab Contributors" }]
-keywords = ["sorting", "algorithms", "visualization", "education", "benchmarking"]
+authors = [{ name = "AlgoLab Contributors" }]
+keywords = ["algorithms", "sorting", "graphs", "visualization", "education", "benchmarking"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Education",
@@ -22,7 +22,13 @@ classifiers = [
 ]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/bhr007/AlgoLab"
+Repository = "https://github.com/bhr007/AlgoLab"
+Issues = "https://github.com/bhr007/AlgoLab/issues"
+
 [project.scripts]
+algolab = "sortlab.cli:main"
 sortlab = "sortlab.cli:main"
 
 [project.optional-dependencies]

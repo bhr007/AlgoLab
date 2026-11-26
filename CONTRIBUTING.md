@@ -1,25 +1,27 @@
-# Contributing to SortLab
+# Contributing to AlgoLab
 
-Thanks for considering a contribution! SortLab aims to be a welcoming, beginner-friendly reference for sorting and graph algorithms.
+Thanks for considering a contribution! **AlgoLab** aims to be a welcoming, beginner-friendly, and developer-focused reference platform for sorting and graph algorithms.
 
 ## Ways to contribute
 
 - Add or improve a sorting or graph algorithm implementation.
 - Add tests for edge cases (disconnected graphs, negative cycles, duplicates, etc.).
 - Improve explanations, examples, or complexity notes.
-- Add or improve a Matplotlib visualization.
+- Add or improve a Matplotlib visualization or Studio workflow.
 - Improve benchmarks, CLI usability, or developer tooling.
 
 ## Development setup
 
 ```bash
-git clone https://github.com/bhr007/sortlab.git
-cd sortlab
+git clone https://github.com/bhr007/AlgoLab.git
+cd AlgoLab
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev,visualization]"
 pytest
 ```
+
+> **Note on package layout:** The import package directory remains `src/sortlab/` for backward compatibility with existing imports (`from sortlab...`).
 
 ## Algorithm contribution checklist
 
@@ -38,7 +40,7 @@ Every sorting algorithm contribution should:
 Every graph algorithm contribution should:
 
 1. Keep the pure implementation in `src/sortlab/graphs/algorithms/` completely independent of Matplotlib.
-2. Document graph constraints (directed/undirected, weight constraints, DAG/cycle handling) and time/space complexities in the docstring and `docs/GRAPH_ALGORITHMS.md`.
+2. Document graph constraints (directed/undirected, weight constraints, DAG/cycle handling) and time/space complexities in the docstring and [docs/GRAPH_ALGORITHMS.md](docs/GRAPH_ALGORITHMS.md).
 3. Never mutate the input `Graph` object.
 4. Handle empty graphs, single-node graphs, disconnected graphs, and constraint errors cleanly.
 5. Emit standardized, JSON-serializable `GraphEvent` objects in `src/sortlab/graphs/runner.py` and register metadata in `src/sortlab/graphs/registry.py`.
@@ -58,4 +60,4 @@ Keep pull requests focused. Describe what changed, why it is useful, and how it 
 
 ## Code of conduct
 
-Be respectful, constructive, and welcoming. Critique code and ideas, not people.
+Be respectful, constructive, and welcoming. Critique code and ideas, not people. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

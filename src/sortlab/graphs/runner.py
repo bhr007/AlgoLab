@@ -1,4 +1,4 @@
-"""Event-producing wrappers for all SortLab graph algorithms."""
+"""Event-producing wrappers for all AlgoLab graph algorithms."""
 
 from __future__ import annotations
 

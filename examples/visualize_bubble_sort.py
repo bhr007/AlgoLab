@@ -1,4 +1,4 @@
-"""Run with: pip install -e '.[visualization]' && python examples/visualize_bubble_sort.py"""
+"""AlgoLab example — run with: pip install -e '.[visualization]' && python examples/visualize_bubble_sort.py"""
 
 from sortlab.core import bubble_sort_events
 from sortlab.visualization.matplotlib import animate_events

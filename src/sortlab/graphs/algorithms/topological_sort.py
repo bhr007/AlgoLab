@@ -1,4 +1,4 @@
-"""Topological Sort (Kahn's algorithm) for SortLab Directed Acyclic Graphs."""
+"""Topological Sort (Kahn's algorithm) for AlgoLab Directed Acyclic Graphs."""
 
 from __future__ import annotations
 

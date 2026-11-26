@@ -10,7 +10,7 @@ from typing import Any
 
 
 class SortEventType(str, Enum):
-    """Canonical operations emitted by SortLab sorting event streams."""
+    """Canonical operations emitted by AlgoLab sorting event streams."""
 
     COMPARE = "compare"
     SWAP = "swap"

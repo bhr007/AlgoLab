@@ -1,4 +1,4 @@
-"""Interactive command-line interface for SortLab."""
+"""Interactive command-line interface for AlgoLab."""
 
 from __future__ import annotations
 
@@ -38,8 +38,8 @@ ALGORITHMS: dict[str, tuple[str, Callable]] = {
 
 
 def show_main_menu() -> None:
-    """Print the top-level SortLab mode selection menu."""
-    print("\n========== SortLab ==========")
+    """Print the top-level AlgoLab mode selection menu."""
+    print("\n========== AlgoLab ==========")
     print("Explore. Visualize. Understand Algorithms.\n")
     print("   1. Sorting Algorithms (CLI + Visualization)")
     print("   2. Graph Algorithms (CLI + Visualization)")
@@ -488,11 +488,12 @@ def _run_gui_loop(args: argparse.Namespace) -> None:
 
 
 def main(argv=None) -> int:
-    """Run the interactive SortLab CLI."""
+    """Run the interactive AlgoLab CLI."""
     parser = argparse.ArgumentParser(
-        prog="sortlab",
+        prog="algolab",
         description=(
-            "Choose and visualize sorting or graph algorithms from the SortLab collection."
+            "AlgoLab — Explore. Visualize. Understand Algorithms. "
+            "Choose and visualize sorting or graph algorithms."
         ),
     )
     parser.add_argument(

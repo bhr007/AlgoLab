@@ -9,8 +9,10 @@ from sortlab.core.registry import get_algorithm_spec
 from sortlab.graphs.registry import GRAPH_ALGORITHM_SPECS, get_graph_algorithm_spec
 from sortlab.gui import (
     GRAPH_EXAMPLES,
+    AlgoLabStudio,
     GraphInputRequest,
     SortingInputRequest,
+    SortLabStudio,
     build_graph_request,
     build_sorting_request,
     describe_graph_constraints,
@@ -202,3 +204,7 @@ def test_launch_gui_studio_calls_plt_show_and_cleans_up():
     mock_show.assert_called_once()
     mock_close.assert_called_once()
     assert studio._closed is True
+    assert isinstance(studio, AlgoLabStudio)
+    assert SortLabStudio is AlgoLabStudio
+    assert studio.fig._algolab_studio is studio
+    assert studio.fig._sortlab_studio is studio

@@ -1,6 +1,6 @@
 # Code of Conduct
 
-SortLab is committed to providing a welcoming, respectful, and harassment-free experience for everyone.
+AlgoLab is committed to providing a welcoming, respectful, and harassment-free experience for everyone.
 
 Examples of expected behavior:
 - Be kind, patient, and constructive.

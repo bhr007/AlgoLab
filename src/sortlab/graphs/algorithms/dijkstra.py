@@ -1,4 +1,4 @@
-"""Dijkstra's shortest-path algorithm for SortLab graphs."""
+"""Dijkstra's shortest-path algorithm for AlgoLab graphs."""
 
 from __future__ import annotations
 

@@ -13,7 +13,7 @@ from .model import Graph, Node
 
 
 class GraphEventType(str, Enum):
-    """Canonical operations emitted by SortLab graph algorithm event streams."""
+    """Canonical operations emitted by AlgoLab graph algorithm event streams."""
 
     START = "start"
     DISCOVER_NODE = "discover_node"
